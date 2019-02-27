@@ -14,6 +14,7 @@ use Spatie\MediaLibrary\ImageGenerators\ImageGenerator;
 use Spatie\MediaLibrary\Conversion\ConversionCollection;
 use Spatie\MediaLibrary\Events\ConversionHasBeenCompleted;
 use Spatie\MediaLibrary\Helpers\File as MediaLibraryFileHelper;
+use Spatie\MediaLibrary\Image\ImageManipulator;
 
 class FileManipulator
 {
@@ -111,9 +112,8 @@ class FileManipulator
             $conversion->format($media->extension);
         }
 
-        Image::load($conversionTempFile)
-            ->useImageDriver(config('medialibrary.image_driver'))
-            ->manipulate($conversion->getManipulations())
+        ImageManipulator::load($conversionTempFile)
+            ->manipulations($conversion->getManipulations())
             ->save();
 
         return $conversionTempFile;

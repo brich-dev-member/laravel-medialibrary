@@ -3,7 +3,7 @@
 namespace Spatie\MediaLibrary\Conversion;
 
 use BadMethodCallException;
-use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\Image\Manipulations;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Conversion
@@ -14,7 +14,7 @@ class Conversion
     /** @var int */
     protected $extractVideoFrameAtSecond = 0;
 
-    /** @var \Spatie\Image\Manipulations */
+    /** @var \Spatie\MediaLibrary\Image\Manipulations */
     protected $manipulations;
 
     /** @var array */
@@ -30,9 +30,7 @@ class Conversion
     {
         $this->name = $name;
 
-        $this->manipulations = (new Manipulations())
-            ->optimize(config('medialibrary.image_optimizers'))
-            ->format('jpg');
+        $this->manipulations = (new Manipulations());
     }
 
     public static function create(string $name)
@@ -68,7 +66,7 @@ class Conversion
         return $this;
     }
 
-    public function shouldKeepOriginalImageFormat(): Bool
+    public function shouldKeepOriginalImageFormat(): bool
     {
         return $this->keepOriginalImageFormat;
     }
@@ -85,16 +83,51 @@ class Conversion
         return $this;
     }
 
-    public function __call($name, $arguments)
+    public function width($width)
     {
-        if (! method_exists($this->manipulations, $name)) {
-            throw new BadMethodCallException("Manipulation `{$name}` does not exist");
-        }
-
-        $this->manipulations->$name(...$arguments);
+        $this->manipulations->maxWidth($width);
 
         return $this;
     }
+
+    public function height($height)
+    {
+        $this->manipulations->maxHeight($height);
+
+        return $this;
+    }
+
+    public function optimize($optimizeOptions = [])
+    {
+        $this->manipulations->optimize($optimizeOptions);
+
+        return $this;
+    }
+
+    public function fitCrop($width, $height)
+    {
+        $this->manipulations->fitCrop($width, $height);
+
+        return $this;
+    }
+
+    public function format($format)
+    {
+        $this->manipulations->format($format);
+
+        return $this;
+    }
+
+//    public function __call($name, $arguments)
+//    {
+//        if (! method_exists($this->manipulations, $name)) {
+//            throw new BadMethodCallException("Manipulation `{$name}` does not exist");
+//        }
+//
+//        $this->manipulations->$name(...$arguments);
+//
+//        return $this;
+//    }
 
     /**
      * Set the manipulations for this conversion.
@@ -219,7 +252,7 @@ class Conversion
             return $originalFileExtension;
         }
 
-        if ($manipulationArgument = $this->manipulations->getManipulationArgument('format')) {
+        if ($manipulationArgument = $this->manipulations->getManipulationOptions('format')) {
             return $manipulationArgument;
         }
 
