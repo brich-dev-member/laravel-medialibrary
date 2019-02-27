@@ -2,7 +2,6 @@
 
 namespace Spatie\MediaLibrary;
 
-use Spatie\Image\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Spatie\MediaLibrary\Conversion\Conversion;
