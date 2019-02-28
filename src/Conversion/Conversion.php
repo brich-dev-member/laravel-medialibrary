@@ -30,7 +30,8 @@ class Conversion
     {
         $this->name = $name;
 
-        $this->manipulations = (new Manipulations());
+        $this->manipulations = (new Manipulations())
+            ->format('jpg');
     }
 
     public static function create(string $name)

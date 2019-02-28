@@ -79,6 +79,10 @@ class ImageManipulator
             case 'height':
                 $this->height($manipulation->getOptions());
                 break;
+
+            case 'format':
+                $this->format($manipulation->getOptions());
+                break;
         }
     }
 
@@ -111,6 +115,13 @@ class ImageManipulator
     public function height($height)
     {
         $this->imagick->scaleImage(0, $height);
+    }
+
+    public function format(string $format)
+    {
+        if (strtolower($this->imagick->getImageFormat()) !== strtolower($format)) {
+            $this->imagick->setImageFormat($format);
+        }
     }
 
     public function save()
