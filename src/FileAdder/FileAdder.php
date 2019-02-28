@@ -175,7 +175,7 @@ class FileAdder
      */
     public function setFileName(string $fileName)
     {
-        $this->fileName = $fileName;
+        $this->fileName = mb_strtolower($fileName);
 
         return $this;
     }

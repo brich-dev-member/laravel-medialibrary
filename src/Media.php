@@ -147,7 +147,7 @@ class Media extends Model implements Responsable
 
     public function getExtensionAttribute(): string
     {
-        return pathinfo($this->file_name, PATHINFO_EXTENSION);
+        return strtolower(pathinfo($this->file_name, PATHINFO_EXTENSION));
     }
 
     public function getHumanReadableSizeAttribute(): string
